@@ -1,3 +1,7 @@
+// Reads from file input
+// Converts contents to piglatin
+// Streams to output file
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -5,6 +9,7 @@
 using namespace std;
 
 bool isVowel(char ch);
+string punctuationManipulation(string pStr);
 string rotate(string pStr);
 string pigLatinString(string pStr);
 
@@ -48,6 +53,26 @@ bool isVowel(char ch) {
   }
 }
 
+string punctuationManipulation(string pStr) {
+  int len = pStr.length();
+  int counter;
+  char ch;
+
+  for (counter = 0; counter < len - 1; counter++) {
+    ch = pStr[counter];
+    switch (ch) {
+      case ',':
+      case '.':
+      case '?':
+      case ';':
+      case ':':
+        pStr.erase(pStr.begin() + counter);
+        pStr = pStr + ch;
+    }
+  }
+  return pStr;
+}
+
 string rotate(string pStr) {
   string::size_type len = pStr.length();
 
@@ -88,5 +113,5 @@ string pigLatinString(string pStr) {
       pStr = pStr + "ay";
   }
 
-  return pStr;
+  return punctuationManipulation(pStr);
 }
