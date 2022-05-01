@@ -1,0 +1,174 @@
+// Airplane Seating Plan
+// Offers a seating plan (2 dimensional array)
+// User selects seating class (First class, business, or economy)
+// User selects row and column based off class
+
+#include <iostream>
+#include <iomanip>
+
+using namespace std;
+
+const int ROWS = 13;  // row array size
+const int COLUMNS = 6;  // column array size
+
+void initializeSeatPlan(char sPlan[][COLUMNS], int rowSize);  // initializes original open seat plan
+void showSeatAssignments(char sPlan[][COLUMNS], int rowSize);  // shows graphic
+void showMenu(char sPlan[][COLUMNS], int rowSize);  // explains the program to user and showSeatAssignments()
+void assignSeat(char sPlan[][COLUMNS], int rowSize);  // seat select and updates seat plan with response
+
+int letterToInt(char col);  // transfers column letter to int
+void classToSeat(char sPlan[][COLUMNS], char class_select);  // offers seating based on class selection
+
+
+// Main Program:
+int main() {
+
+  char seatPlan[ROWS][COLUMNS];  // the seat array
+  char resp;  // input response (y/n)
+
+  initializeSeatPlan(seatPlan, ROWS);  // initializes original open seat plan
+
+  showMenu(seatPlan, ROWS);  // explains the program to user and showSeatAssignments()
+
+
+  // User input:
+  cout << "To reserve a seat enter Y/y(Yes), N/n(No): " << endl;
+  cin >> resp;
+  cout << endl;
+
+
+  while (toupper(resp) == 'Y')
+  {
+      assignSeat(seatPlan, ROWS);  // seat select and updates seat plan with response
+
+      // Loop program, restart
+      showMenu(seatPlan, ROWS);  // explains the program to user and showSeatAssignments()
+      cout << "Reserve another seat Y/y(Yes), N/n(No): ";
+      cin >> resp;
+      cout << endl;
+  }
+
+
+  return 0;
+
+}
+
+
+void initializeSeatPlan(char sPlan[][COLUMNS], int rowSize)  // initializes original open seat plan
+{
+    int i, j;
+
+    for (i = 0; i < rowSize; i++) {
+      for (j = 0; j < COLUMNS; j++) {
+        sPlan[i][j] = '*';
+      }
+    }
+}
+
+
+void showSeatAssignments(char sPlan[][COLUMNS], int rowSize)  // shows graphic
+{
+  int i, j;
+
+  cout << "        A B C  D E F" << endl;
+
+  for (i = 0; i < rowSize; i++)
+  {
+    cout << "Row " << setw(2) << i + 1 << "  ";
+    for (j = 0; j < COLUMNS; j++)
+    {
+      cout << sPlan[i][j] << " ";
+      if (j == 2)
+        cout << " ";
+    }
+      cout << endl;
+  }
+
+    cout << "* -- available seat" << endl;
+    cout << "X -- occupied seat" << endl;
+    cout << endl;
+}
+
+
+void showMenu(char sPlan[][COLUMNS], int rowSize)  // explains the program to user and showSeatAssignments()
+{
+  cout << "This program assigns seats for a commercial airplane." << endl;
+  cout << "The current seat assignments is as follows." << endl;
+  showSeatAssignments(sPlan, rowSize);  // shows graphic
+  cout << "Rows 1 and 2 are for first class passengers." << endl;
+  cout << "Rows 3 through 7 are for business class passenders." << endl;
+  cout << "Rows 8 through 13 are for economy class passenders." << endl;
+}
+
+
+void assignSeat(char sPlan[][COLUMNS], int rowSize)  // seat select and updates seat plan array with response
+{
+  char in_class;  // input class selection (F, B, or E)
+
+  cout << "Assign ticket type (first class (F/f), ";
+  cout << "business class (B/b), ";
+  cout << "or economy class (E/e))" << endl;
+  cin >> in_class;  // input class selection (F, B, or E)
+
+  classToSeat(sPlan, in_class);
+}
+
+
+void classToSeat(char sPlan[][COLUMNS], char class_select) // offers seating based on class selection
+{
+  int row;
+  int col;
+  char letter;
+
+  switch (toupper(class_select))
+    {
+        case 'F':
+          cout << "Select desired row (1-2): ";
+          cin >> row;
+          row -= 1;
+          cout << "Select desired column (A-F): ";
+          cin >> letter;
+          col = letterToInt(letter);
+          sPlan[row][col] = 'X';
+          break;
+        case 'B':
+          cout << "Select desired row (3-7): ";
+          cin >> row;
+          row -= 1;
+          cout << "Select desired column (A-F): ";
+          cin >> letter;
+          col = letterToInt(letter);
+          sPlan[row][col] = 'X';
+          break;
+        case 'E':
+          cout << "Select desired row (8-13): ";
+          cin >> row;
+          row -= 1;
+          cout << "Select desired column (A-F): ";
+          cin >> letter;
+          col = letterToInt(letter);
+          sPlan[row][col] = 'X';
+          break;
+    }
+}
+
+
+int letterToInt(char col)  // transfers column letter to int
+{
+  switch (toupper(col))
+    {
+        case 'A':
+          return 0;
+        case 'B':
+          return 1;
+        case 'C':
+          return 2;
+        case 'D':
+          return 3;
+        case 'E':
+          return 4;
+        case 'F':
+          return 5;
+    }
+}
+
