@@ -1,0 +1,118 @@
+// Program Exercise 9.2
+// Author: Brandon Jenkins
+
+// This program reads from an external .txt file of student data
+// And interprets the student's grade and if they've achieved the highest score
+// The program outputs the student data
+// And then outputs the highest achieved scores.
+
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+#include <string>
+
+using namespace std;
+
+struct studentType  // student data storage
+{
+    string studentFName;
+    string studentLName;
+    int testScore;
+    char grade;
+};
+
+const int NO_OF_STUDENTS = 20;  // there are 20 students in the external file
+
+studentType arrStudents[NO_OF_STUDENTS];  // array of 20 students of struct type
+
+char assignGrade(int score);  // assign grade to each student
+
+int highestScore(studentType studentList[]);  // finds the highest test score out of a list of students
+
+bool printHighScore(studentType student, int highScore);  // prints the student(s) with the highest score
+
+
+int main()
+{
+    ifstream inFile;  // input file stream variable
+    string externalFile = "Ch9_Ex2Data.txt";  // student data file
+    
+    studentType student;  // a struct for each individual student
+    
+    inFile.open(externalFile);  // begin reading data
+    
+    for (int count = 0; count < NO_OF_STUDENTS; count++)  
+    {
+        // reads the students data into the array
+        // outputs the students data, formatted
+        
+        inFile >> student.studentFName >> student.studentLName >> student.testScore;  // retrieve student data
+        student.grade = assignGrade(student.testScore);  // assign grade to student
+        arrStudents[count] = student;  // add student into the array of students
+        
+        cout << arrStudents[count].studentLName << ", ";
+        cout << arrStudents[count].studentFName << ", ";
+        cout << arrStudents[count].testScore << ", ";
+        cout << arrStudents[count].grade << endl;
+    };
+    
+    inFile.close();  // close data file
+    
+    int highScore = highestScore(arrStudents);  // find high score
+    cout << "\nHighest Score: " << highScore << endl;  // outputs highest score
+    
+    cout << "\nStudent(s) with the highest score: " << endl;
+    for (int count = 0; count < NO_OF_STUDENTS; count++)  
+    {
+        // loop through the list of students
+        // to post multiple occurrences of the highest score
+        
+        bool print = printHighScore(arrStudents[count], highScore);
+        if (print) {
+            cout << arrStudents[count].studentLName << ", ";
+            cout << arrStudents[count].studentFName << endl;
+        }
+    };
+    
+    return 0;
+};
+
+
+char assignGrade(int score)  // assign grade to each student
+{
+    if (score >= 90) {
+        return 'A';
+    } else if (score >= 80) {
+        return 'B';
+    } else if (score >= 70) {
+        return 'C';
+    } else if (score >= 60) {
+        return 'D';
+    } else {
+        return 'F';
+    }
+};
+
+
+int highestScore(studentType studentList[])  // finds the highest test score out of a list of students
+{
+    int highScore = 0;
+    
+    for (int count = 0; count < NO_OF_STUDENTS; count++) {
+        if (studentList[count].testScore > highScore) {
+            highScore = studentList[count].testScore;
+        };
+    };
+    
+    return highScore;
+};
+
+
+bool printHighScore(studentType student, int highScore)  // prints the student(s) with the highest score
+{
+    if (student.testScore == highScore) {
+        return 1;
+    }
+    
+    return 0;
+};

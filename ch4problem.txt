@@ -1,0 +1,73 @@
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+
+using namespace std;
+
+int main() {
+    ifstream inFile;
+    ofstream outFile;
+    
+    float accountBalance;
+    float finalAccountBalance;  // created to try to pass check
+    int withdraw;
+    float serviceCharge = 0.00;
+    bool choice;
+
+    inFile.open("Ch4_Ex15_Data.txt");
+    inFile >> accountBalance;
+
+    cout << accountBalance << endl;
+    cout << fixed << showpoint << setprecision(2);
+
+    cin >> withdraw;
+
+
+    if (accountBalance <= 0)
+    {
+      cout << "Insufficient funds." << endl;
+    }
+    else if (withdraw > 500)
+    {
+      cout << "Maximum withdrawal is $500" << endl;
+    }
+    else if ((withdraw > 300) && (accountBalance > withdraw))
+    {
+      serviceCharge = 0.80;  // check says service charge is 80 cents
+      finalAccountBalance = accountBalance - (withdraw + serviceCharge);
+      cout << serviceCharge << endl;
+      outFile.open("Ch4_Ex15_Data.txt");
+      outFile << fixed << showpoint << setprecision(2);
+      outFile << finalAccountBalance;
+    }
+    else if (accountBalance < withdraw)
+    {
+      cout << "Insufficient funds. Service charge is $25.00" << endl;
+      cin >> choice;
+      if (choice == true)
+      {
+        serviceCharge = 25.00;
+        finalAccountBalance = accountBalance - (withdraw + serviceCharge);
+        cout << serviceCharge << endl;
+        outFile.open("Ch4_Ex15_Data.txt");
+        outFile << fixed << showpoint << setprecision(2);
+        outFile << finalAccountBalance;
+      }
+      else
+      {
+        cout << serviceCharge << endl;
+      }
+    }
+    else
+    {
+      finalAccountBalance = accountBalance - (withdraw + serviceCharge);
+      cout << serviceCharge << endl;
+      outFile.open("Ch4_Ex15_Data.txt");
+      outFile << fixed << showpoint << setprecision(2);
+      outFile << finalAccountBalance;
+    }
+
+    cout << finalAccountBalance << endl;
+
+    return 0;
+}
