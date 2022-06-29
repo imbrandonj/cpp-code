@@ -1,0 +1,272 @@
+// Program Exercise 11.2
+// Author: Brandon Jenkins
+
+// This program exercise asked to edit the dateType class
+// 1) To provide a function that checks if it is a leap year
+// 2) For the constructor to check if the date is valid
+// This does not particularly practice inheritance so I additionally
+// (Program exercise doesn't ask for this)
+// Provide a personType class that provides a birthdate derived from
+// dataType class
+
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class dateType
+{
+    public:
+        void setDate(int month, int day, int year);
+        // This function sets the date
+        // Member variables are dMonth, dDay, dYear
+        
+        int getDay() const;
+        // This function returns the day
+        
+        int getMonth() const;
+        // This function returns the month
+        
+        int getYear() const;
+        // This function returns the year
+        
+        void printDate() const;
+        // This function prints the date in mm-dd-yyyy format
+        
+        void isLeapYear();
+        // This function checks whether a year is a leap year
+        // And prints whether it is or is not
+        
+        dateType(int month = 1, int day = 1, int year = 1900);
+        // Constructor to set default date
+    
+    
+        int dMonth;  // member variable storing the month
+        int dDay;  // member variable storing the day
+        int dYear;  // member variable storing the year
+};
+
+
+class personType: public dateType
+{
+    public:
+        void setBirthDate(int month, int day, int year);
+        // This function sets & stores the person's birthdate
+        
+        void printBirthDate();
+        // This function prints the person's birthdate
+        
+        void isBirthday(dateType date);
+        // This function checks if today is a birthday
+    
+    private:
+        string bdate;  // member variable storing full birthdate
+};
+
+
+int main()
+{
+    cout << "Welcome to the dateType program.\n";
+    cout << "This program demonstrates the class dateType, ";
+    cout << "which represents a class that sets a date.\n" << endl;
+    
+    cout << "The first demonstration will define defaultDate, ";
+    cout << "of the dateType class, ";
+    cout << "using a constructor with default parameters.\n" << endl;
+    
+    cout << "dateType defaultDate\n";
+    cout << "defaultDate.printDate()\n" << endl;
+    
+    dateType defaultDate;
+    defaultDate.printDate();
+    
+    cout << "\nThe above prints out the date of defaultDate. ";
+    cout << "This is the date given by the constructor with parameters.\n";
+    cout << "Now let's create a new date and ";
+    cout << "provide the date in the parameters.\n" << endl;
+    
+    cout << "dateType mBday(07, 18, 1990)\n";
+    cout << "myBday.printDate()\n" << endl;
+    
+    dateType myBday(07, 18, 1990);
+    myBday.printDate();
+    
+    cout << "\n\nWe can access separate data variables with member functions. ";
+    cout << "For example, what day is my birthday?\n" << endl;
+    cout << "myBday.getDay()" << endl;
+    cout << myBday.getDay() << endl;
+    
+    cout << "\nWe can call the isLeapYear() function to check if ";
+    cout << "my birthdate falls on a leap year.\n";
+    cout << "\nmyBday.isLeapYear();" << endl;
+    
+    myBday.isLeapYear();
+    
+    cout << "\nMy birthdate does not fall on a leap year.\n";
+    cout << "Let's try a year that does.\n" << endl;
+    
+    cout << "dateType testLeapYear(12, 12, 2020)\n";
+    cout << "testLeapYear.isLeapYear();" << endl;
+    
+    dateType testLeapYear(12, 12, 2020);
+    testLeapYear.isLeapYear();
+    
+    cout << "\nOur program also checks for valid dates.\n";
+    cout << "\ndateType testInvalidDate(20, 10, 2020)\n";
+    
+    dateType testInvalidDate(20, 10, 2020);
+    
+    cout << "\nThe program tells us we provided an invalid date." << endl;
+    
+    cout << "\nLet's demonstrate inheritance:\n\n";
+    cout << "personType Brandon\n\n";
+    cout << "We've created a personType Brandon which comes with the ";
+    cout << "dateType class members.\n";
+    
+    personType Brandon;
+    Brandon.setBirthDate(07, 18, 1990);
+    
+    cout << "We'll use the setBirthDate() personType function.\n";
+    cout << "This function calls the dateType setDate() function ";
+    cout << "to set and store the date.\n\n";
+    cout << "Brandon.setBirthDate(07, 18, 1990);\n";
+    cout << "\nAnd now the personType printBirthDate() to print ";
+    cout << "the birthdate.\n\n";
+    cout << "Brandon.printBirthDate();\n" << endl;
+    
+    Brandon.printDate();
+    
+    cout << "\n\nThe cool thing is, personType stores this date ";
+    cout <<"in string format, based upon the 3 int types - ";
+    cout << "dDay, dMonth, dYear - ";
+    cout << "in the dateType class.\n";
+    cout << "The dateType class performs ";
+    cout << "the same checks for valid date input, too.\n" << endl;
+    
+    cout << "Let's create a person whose birthday is today.\n\n";
+    cout << "personType BirthdayBoy\n";
+    cout << "BirthdayBoy.setBirthDate(06, 28, 1954)\n";
+    cout << "dateType todaysDate(06, 28, 2022)\n";
+    cout << "BirthdayBoy.isBirthday(todaysDate)\n" << endl;
+    
+    personType BirthdayBoy;
+    BirthdayBoy.setBirthDate(06, 28, 1954);
+    dateType todaysDate(06, 28, 2022);
+    BirthdayBoy.isBirthday(todaysDate);
+    
+    cout << "\n\nAnd that'll conclude program exercise 11.2 ";
+    cout << "+ some bonus stuff.\n";
+    cout << "Thanks for running the program." << endl;
+    
+    return 0;
+}  // end main
+
+
+void dateType::setDate(int month, int day, int year)
+{
+    // This function sets the date
+    dMonth = month;
+    dDay = day;
+    dYear = year;
+};
+
+
+int dateType::getDay() const
+{
+    // This function returns the day
+    return dDay;
+};
+
+
+int dateType::getMonth() const
+{
+    // This function returns the month
+    return dMonth;
+};
+
+
+int dateType::getYear() const
+{
+    // This function returns the year
+    return dYear;
+};
+
+
+void dateType::printDate() const
+{
+    // This function prints the date in mm-dd-yyyy format
+    cout << dMonth << "-" << dDay << "-" << dYear;
+};
+
+
+void dateType::isLeapYear() 
+ {
+    // This function checks whether a year is a leap year
+    // And prints whether it is or is not
+    
+    if ( dYear % 400 == 0 ) {
+        cout << "\nThis is a leap year." << endl;
+    } 
+    else if ( dYear % 100 == 0 ) {
+        // century dates must be divisible by 400
+        cout << "\nThis is not a leap year." << endl;  
+    } 
+    else if ( dYear % 4 == 0 ) {
+        // not a century date and divisible by 4
+        cout << "\nThis is a leap year." << endl;
+    } else {
+        cout << "\nThis is not a leap year." << endl;
+    }
+ };
+ 
+
+dateType::dateType(int month, int day, int year)
+{
+    // Constructor with parameters
+    // Also checks for date validity 
+    
+    if (( month > 0 ) && ( month < 13 )) {
+        dMonth = month;
+    } else {
+        cout << "\nInvalid month provided." << endl;
+    };
+    
+    if (( day > 0 ) && ( day < 32 )) {
+        dDay = day;
+    } else {
+        cout << "\nInvalid day provided." << endl;
+    };
+    
+    if ( year > 0) {
+        dYear = year;
+    } else {
+        cout << "\nInvalid year provided." << endl;
+    }
+};
+
+void personType::setBirthDate(int month, int day, int year)
+{
+    // This function sets & stores the person's birthdate
+    
+    setDate(month, day, year);
+    
+    bdate = dMonth + '-' + dDay + '-' + dYear;
+};
+
+
+void personType::printBirthDate()
+{
+    // This function prints the person's birthdate
+    cout << bdate << endl;
+};
+        
+        
+void personType::isBirthday(dateType date)
+{
+    // This function checks if today is a birthday
+    
+    if (( date.dDay == dDay ) && ( date.dMonth == dMonth )) {
+        cout << "It's your birthday!!!\n";
+        cout << "Happy Birthday!" << endl;
+    }
+};
