@@ -1,0 +1,186 @@
+// Program Exercise 13.5
+// Author: Brandon Jenkins
+
+// This program uses the class clockType
+// And updates the class clockType
+// By overloading the comparison operator ==
+
+// And per program exercise,
+// By overloading the post-increment operator function 
+// as a member of class clockType
+
+// Per practice,
+// I've decided to overload the stream insertion operator
+// to replace the previous clockType.print() function
+
+
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class clockType
+{
+    int hr;
+    int min;
+    int sec;
+    
+    // stream insertion overload for printing clock object
+    friend ostream& operator<< (ostream&, const clockType&); 
+    
+    public:
+        void setTime(int, int, int);
+        void getTime(int&, int&, int&) const;
+        clockType operator++(int);  // increment cascade
+        bool operator==(const clockType& otherClock) const;  // clock comparison
+        clockType(int, int, int);  // constructor with parameters
+        clockType();  // default constructor
+};
+
+
+void clockType::setTime(int hours, int minutes, int seconds)
+{
+    if ( 0 <= hours && hours < 24 )
+        hr = hours;
+    else
+        hr = 0;
+    
+    if ( 0 <= minutes && minutes < 60 )
+        min = minutes;
+    else
+        min = 0;
+    
+    if ( 0 <= seconds && seconds < 60 )
+        sec = seconds;
+    else
+        sec = 0;
+};
+
+
+void clockType::getTime(int& hours, int& minutes, int& seconds) const
+{
+    hours = hr;
+    minutes = min;
+    seconds = sec;
+};
+
+
+// stream insertion overload for printing clock object
+ostream& operator<< (ostream& osObject, const clockType& clock)
+{
+    if ( clock.hr < 10 )
+        osObject << "0";
+    osObject << clock.hr << ":";
+    
+    if ( clock.min < 10 )
+        osObject << "0";
+    osObject << clock.min << ":";
+    
+    if ( clock.sec < 10 )
+        osObject << "0";
+    osObject << clock.sec << endl;
+    
+    return osObject;
+};
+
+
+// increment cascade, beginning with increment of sec
+clockType clockType::operator++(int u)
+{
+    clockType temp = *this;  // pointer to copy value
+    
+    sec++;
+    
+    if ( sec > 59 ) {
+        sec = 0;
+        min++;
+        
+        if ( min > 59 ) {
+            min = 0;
+            hr++;
+            
+            if ( hr > 23 )
+            hr = 0;
+        }
+    };
+    
+    return temp;
+};
+
+
+// function to compare times of two clocks
+bool clockType::operator==(const clockType& otherClock) const
+{
+    return (( hr == otherClock.hr ) && ( min == otherClock.min )
+            && ( sec == otherClock.sec ));
+}
+
+
+clockType::clockType(int hours, int minutes, int seconds)
+{
+    setTime(hours, minutes, seconds);
+};
+
+
+clockType::clockType()  // default constructor
+{
+    hr = 0;
+    min = 0;
+    sec = 0;
+};
+
+
+// begin main
+int main()
+{
+    clockType myClock(8, 23, 50);
+    clockType yourClock(8, 23, 50);
+    clockType tempClock(9, 16, 25);
+    
+    cout << "myClock: ";
+    cout << myClock;
+    cout << endl;
+    
+    cout << "yourClock: ";
+    cout << yourClock;
+    cout << endl;
+    
+    cout << "tempClock: ";
+    cout << tempClock;
+    cout << endl;
+    
+    // Comparison of myClock and yourClock
+    cout << "\nComparison of myClock, yourClock, and tempClock ";
+    cout << "using the overloaded operator == \n" << endl;
+    
+    if ( myClock == yourClock ) {
+        cout << "The time of myClock and ";
+        cout << "yourClock are equal." << endl;
+    } else {
+        cout << "The time of myClock and ";
+        cout << "yourClock are not equal." << endl;
+    };
+    
+    
+    // Comparison of myClock and tempClock
+    if ( myClock == tempClock ) {
+        cout << "The time of myClock and ";
+        cout << "tempClock are equal." << endl;
+    } else {
+        cout << "The time of myClock and ";
+        cout << "tempClock are not equal." << endl;
+    };
+    
+    
+    // Incrementing of clockType object
+    cout << "\nIncrementing of clockType object myClock ";
+    cout << "using myClock++" << endl;
+    
+    for ( int i = 0; i <= 10; i++ ) {
+        myClock++;
+        cout << myClock;
+    };
+    
+    return 0;
+}  // end main
+
