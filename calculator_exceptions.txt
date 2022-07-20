@@ -1,0 +1,167 @@
+// Program Exercise 14.2
+// Author: Brandon Jenkins
+
+// C++ Calculator
+// The user is prompted to enter a number
+// An operation to be performed
+// And a second number
+
+// This program exercise rewrites program exercise 8.4
+// Using exception handling
+// Where 0 and below are exceptions
+// As well as "invalid input".
+
+// In this example I use my own exception classes
+// For invalid operand numbers
+// and invalid operator characters
+
+
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class invalidNum
+{
+    public:
+        invalidNum() 
+        {
+            message = "Enter a valid number greater than 0.";
+        }
+        string what()
+        {
+            return message;
+        }
+    private:
+        string message;
+};
+
+
+class invalidOperator
+{
+    public:
+        invalidOperator()
+        {
+            message = "Enter a valid operator ( *, /, +, - )";
+        }
+        string what()
+        {
+            return message;
+        }
+    private:
+        string message;
+};
+
+
+int enterOperand(int num);
+char enterOperator();
+
+
+// begin main
+int main()
+{
+    bool calcOff;
+    cout << "Welcome to C++ calculator.\n" << endl;
+    
+    while ( !calcOff )
+    {
+        float num1 = -1;
+        float num2 = -1;
+        char operation = 'n';
+        
+        while ( num1 <= 0 )
+        {
+            cout << "\nEnter the first number" << endl;
+            num1 = enterOperand(1);
+        }
+        
+        while (( operation != '*' ) && ( operation != '/' )
+        && ( operation != '+' ) && ( operation != '-' ))
+            operation = enterOperator();        
+        
+        while ( num2 <= 0 )
+        {
+            cout << "\nEnter the second number" << endl;
+            num2 = enterOperand(1);
+        };
+        
+        cout << "\n";
+        cout << num1 << " " << operation << " " << num2 << " ";
+        cout << "= ";
+
+        
+        switch ( operation )
+        {
+            case '*':
+                cout << num1 * num2 << endl;
+                break;
+            case '/':
+                cout << num1 / num2 << endl;
+                break;
+            case '+':
+                cout << num1 + num2 << endl;
+                break;
+            case '-':
+                cout << num1 - num2 << endl;
+                break;
+        }
+    }
+
+    return 0;
+}
+// end main
+
+
+int enterOperand(int operand)
+{
+    try
+    {
+        cin >> operand;
+        if ( operand <= 0 ) 
+        {
+            throw invalidNum();
+        }
+        else if ( !cin ) 
+        {
+            cin.clear();
+            cin.ignore('\n');
+            throw invalidNum();
+        }
+        else
+        {
+            return operand;
+        }
+    }
+    
+    catch ( invalidNum )
+    {
+        cout << invalidNum().what() << endl;
+        return -1;
+    }
+};
+
+
+char enterOperator()
+{
+    char operator_sign;
+    
+    try
+    {
+        cout << "\nEnter the operation to be performed ";
+        cout << "( *, /, +, - )" << endl;
+        cin >> operator_sign;
+        
+        if (( operator_sign != '*' ) && ( operator_sign != '/' )
+        && ( operator_sign != '+' ) && ( operator_sign != '-' ))
+            throw invalidOperator();
+        else
+            return operator_sign;
+    }
+    
+    catch ( invalidOperator )
+    {
+        cout << invalidOperator().what() << endl;
+        return 'n';
+    }
+};
+
